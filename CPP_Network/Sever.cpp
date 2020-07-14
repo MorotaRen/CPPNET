@@ -43,13 +43,32 @@ int SeverMaster::Sever_main() {
 			std::cout << "accept失敗：" << WSAGetLastError() << std::endl;
 			break;
 		}
-		errorNum = send(sock, "HELLO", 5, 0);
+		char WelcomeText[1024] = "接続を確認しました。ようこそ";
+		errorNum = send(sock, WelcomeText, sizeof(WelcomeText), 0);
+		while (true)
+		{
+			char recetext[2048];
+			errorNum = recv(sock,recetext,sizeof(recetext),0);
+			while (recetext[0] != '\0')
+			{
+				if (!strcmp(recetext, "END")) {
+					std::cout << "サーバーを落とします。" << std::endl;
+					break;
+				}
+				else {
+					std::cout << "相手：" << recetext << std::endl;
+					memset(recetext, '\0', sizeof(recetext));
+				}
+			}
+
+		}
 		if (errorNum < 1) {
 			std::cout << "送信失敗：" << WSAGetLastError() << std::endl;
 			break;
 		}
 
 		closesocket(sock);
+		break;
 	}
 
 	WSACleanup();

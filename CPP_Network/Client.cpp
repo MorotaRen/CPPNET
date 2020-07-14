@@ -1,5 +1,6 @@
 #include "Client.h"
 #pragma warning(disable  : 4996)
+
 bool ClientMaster::StartUp_Client() {
 	// winsock2の初期化
 	if (WSAStartup(MAKEWORD(2, 0), &wsaData) != 0) {
@@ -32,7 +33,6 @@ bool ClientMaster::StartUp_Client() {
 		}
 		server.sin_addr.S_un.S_addr = *(unsigned int *)host->h_addr_list[0];
 	}
-
 	return true;
 }
 int ClientMaster::Client_main() {
@@ -63,15 +63,19 @@ int ClientMaster::Client_main() {
 	std::cout << buf << std::endl;
 	// サーバからデータを受信
 	// winsock2の終了処理
-	int cmd = 0;
-	std::cout << "続ける？：";
-	std::cin >> cmd;
-	if (cmd == 0) {
-		WSACleanup();
-
-		return 0;
+	char cmd[2048];
+	while (true)
+	{
+		std::cout << "メッセージ：";
+		std::cin >> cmd;
+		if (!strcmp(cmd, "END")) {
+			send(sock, LEAVINGTEXT, sizeof(LEAVINGTEXT), 0);
+			WSACleanup();
+			break;
+		}
+		else {
+			send(sock, cmd, sizeof(cmd), 0);
+		}
 	}
-	else {
-		ClientMaster::Client_main();
-	}
+	return 0;
 }

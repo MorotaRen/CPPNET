@@ -4,4 +4,5 @@
 #include <iostream>
 #include <stdio.h>
 
+#define LEAVINGTEXT "ëﬁèoÇµÇ‹ÇµÇΩ"
 #define SEVERPORT 12345
