@@ -21,17 +21,22 @@ int ClientMaster::Client_main() {
 	}
 	// サーバに接続
 	connect(sock, (struct sockaddr *)&server, sizeof(server));
-	while (true)
-	{
-		memset(buf, 0, sizeof(buf));
-		int n = recv(sock, buf, sizeof(buf), 0);
-		if (n != -1) {
-			std::cout <<buf << std::endl;
-		}
+	memset(buf, 0, sizeof(buf));
+	int n = recv(sock, buf, sizeof(buf), 0);
+	if (n != -1) {
+		std::cout << buf << std::endl;
 	}
 	// サーバからデータを受信
 	// winsock2の終了処理
-	WSACleanup();
+	int cmd = 0;
+	std::cout << "続ける？：";
+	std::cin >> cmd;
+	if (cmd == 0) {
+		WSACleanup();
 
-	return 0;
+		return 0;
+	}
+	else {
+		ClientMaster::Client_main();
+	}
 }

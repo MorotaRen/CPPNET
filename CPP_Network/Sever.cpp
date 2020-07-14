@@ -1,5 +1,5 @@
 #include "Sever.h"
-
+#pragma warning(disable : 4996)
 bool SeverMaster::SetUp_Windock() {
 	//winsock‚Ì‰Šú‰»
 	if (_WINSOCK2API_::WSAStartup(MAKEWORD(2, 0), &wsaData) != 0) {
@@ -38,6 +38,7 @@ int SeverMaster::Sever_main() {
 	while (1) {
 		len = sizeof(client);
 		sock = accept(sock0, (struct sockaddr *)&client, &len);
+		std::cout << "Ú‘±ÒF" << inet_ntoa(client.sin_addr) << "Ú‘±ÒPORTF" << ntohs(client.sin_port) << std::endl;
 		if (sock == INVALID_SOCKET) {
 			std::cout << "accept¸”sF" << WSAGetLastError() << std::endl;
 			break;
