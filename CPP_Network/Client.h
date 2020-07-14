@@ -12,4 +12,6 @@ private:
 	struct sockaddr_in server;
 	SOCKET sock;
 	char buf[32];
+	char hostname[256];
+	unsigned int **addrptr;
 };
