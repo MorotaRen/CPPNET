@@ -32,6 +32,25 @@ bool ClientMaster::StartUp_Client() {
 			return false;
 		}
 		server.sin_addr.S_un.S_addr = *(unsigned int *)host->h_addr_list[0];
+		// サーバに接続
+		while (*addrptr != NULL)
+		{
+			server.sin_addr.S_un.S_addr = *(*addrptr);
+			if (connect(sock, (struct sockaddr *)&server, sizeof(server)) == 0) {
+				break;
+			}
+			addrptr++;
+		}
+		if (*addrptr == NULL) {
+			std::cout << "全ての接続に失敗しました…：" << WSAGetLastError() << std::endl;
+		}
+
+	}
+	else {
+		if (connect(sock,(struct sockaddr *)&server,sizeof(server)) != 0) {
+			std::cout << "接続に失敗しました…：" << WSAGetLastError() << std::endl;
+			return 1;
+		}
 	}
 	return true;
 }
@@ -41,19 +60,6 @@ int ClientMaster::Client_main() {
 		return 0;
 	}
 	std::cout << "セットアップに成功しました。" << std::endl;
-	// サーバに接続
-	while (*addrptr != NULL)
-	{
-		server.sin_addr.S_un.S_addr = *(*addrptr);
-		if (connect(sock,(struct sockaddr *)&server,sizeof(server)) == 0) {
-			break;
-		}
-		addrptr++;
-	}
-	if (*addrptr == NULL) {
-		std::cout << "全ての接続に失敗しました…："<<WSAGetLastError() << std::endl;
-	}
-	connect(sock, (struct sockaddr *)&server, sizeof(server));
 	memset(buf, 0, sizeof(buf));
 	int n = recv(sock, buf, sizeof(buf), 0);
 	if (n < 0) {
