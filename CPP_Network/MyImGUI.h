@@ -6,21 +6,20 @@
 
 #include "config.h"
 #pragma comment(lib, "d3d11.lib")
-namespace MyImGui {
+namespace MyimGui {
 	static ID3D11Device*            pDevice = NULL;
 	static ID3D11DeviceContext*     pDeviceContext = NULL;
 	static IDXGISwapChain*          pSwapChain = NULL;
 	static ID3D11RenderTargetView*  pRenderTargetView = NULL;
 
-	HWND hWindow;
+	static HWND hWindow;
+	static bool show_gui = true;
+	static bool checkbox;
 
-	bool show_gui = true;
-	bool checkbox;
-
-	static bool CreateDevice(HWND hWindow);
-	static void CleanupDevice();
-	static void CreateRenderTarget();
-	static void CleanupRenderTarget();
+	bool CreateDevice(HWND hWindow);
+	void CleanupDevice();
+	void CreateRenderTarget();
+	void CleanupRenderTarget();
 	int	Showing();
 
 	static LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);

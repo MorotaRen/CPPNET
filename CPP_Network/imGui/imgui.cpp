@@ -265,7 +265,7 @@ CODE
         ImGui::EndFrame();
         ImGui::Render();
         ImDrawData* draw_data = ImGui::GetDrawData();
-        MyImGuiRenderFunction(draw_data);
+        MyimGuiRenderFunction(draw_data);
         SwapBuffers();
      }
 
@@ -281,7 +281,7 @@ CODE
  ---------------------------------------------
  The bindings in impl_impl_XXX.cpp files contains many working implementations of a rendering function.
 
-    void void MyImGuiRenderFunction(ImDrawData* draw_data)
+    void void MyimGuiRenderFunction(ImDrawData* draw_data)
     {
        // TODO: Setup render state: alpha-blending enabled, no face culling, no depth testing, scissor enabled
        // TODO: Setup viewport covering draw_data->DisplayPos to draw_data->DisplayPos + draw_data->DisplaySize
@@ -872,9 +872,9 @@ static void             RenderWindowTitleBarContents(ImGuiWindow* window, const 
 //    If you want thread-safety to allow N threads to access N different contexts, you can:
 //    - Change this variable to use thread local storage so each thread can refer to a different context, in imconfig.h:
 //          struct ImGuiContext;
-//          extern thread_local ImGuiContext* MyImGuiTLS;
-//          #define GImGui MyImGuiTLS
-//      And then define MyImGuiTLS in one of your cpp file. Note that thread_local is a C++11 keyword, earlier C++ uses compiler-specific keyword.
+//          extern thread_local ImGuiContext* MyimGuiTLS;
+//          #define GImGui MyimGuiTLS
+//      And then define MyimGuiTLS in one of your cpp file. Note that thread_local is a C++11 keyword, earlier C++ uses compiler-specific keyword.
 //    - Future development aim to make this context pointer explicit to all calls. Also read https://github.com/ocornut/imgui/issues/586
 //    - If you need a finite number of contexts, you may compile and use multiple instances of the ImGui code from different namespace.
 #ifndef GImGui

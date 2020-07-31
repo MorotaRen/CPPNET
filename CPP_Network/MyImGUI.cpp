@@ -1,6 +1,5 @@
-#include <iostream>
 #include "MyImGUI.h"
-bool MyImGui::CreateDevice(HWND hWindow)
+bool MyimGui::CreateDevice(HWND hWindow)
 {
 	DXGI_SWAP_CHAIN_DESC sd;
 	ZeroMemory(&sd, sizeof(sd));
@@ -41,7 +40,7 @@ bool MyImGui::CreateDevice(HWND hWindow)
 	return true;
 }
 
-void MyImGui::CleanupDevice()
+void MyimGui::CleanupDevice()
 {
 	CleanupRenderTarget();
 	if (pSwapChain) { pSwapChain->Release(); pSwapChain = NULL; }
@@ -49,7 +48,7 @@ void MyImGui::CleanupDevice()
 	if (pDevice) { pDevice->Release(); pDevice = NULL; }
 }
 
-void MyImGui::CreateRenderTarget()
+void MyimGui::CreateRenderTarget()
 {
 	ID3D11Texture2D* pBackBuffer;
 	pSwapChain->GetBuffer(0, IID_PPV_ARGS(&pBackBuffer));
@@ -57,7 +56,7 @@ void MyImGui::CreateRenderTarget()
 	pBackBuffer->Release();
 }
 
-void MyImGui::CleanupRenderTarget()
+void MyimGui::CleanupRenderTarget()
 {
 	if (pRenderTargetView)
 	{
@@ -67,7 +66,7 @@ void MyImGui::CleanupRenderTarget()
 }
 
 LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
-LRESULT WINAPI MyImGui::WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+LRESULT WINAPI MyimGui::WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	if (ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam))
 		return true;
@@ -93,44 +92,44 @@ LRESULT WINAPI MyImGui::WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPara
 	return ::DefWindowProc(hWnd, msg, wParam, lParam);
 }
 
-int MyImGui::Showing()
+int MyimGui::Showing()
 {
 	WNDCLASSEX wc;
 	ZeroMemory(&wc, sizeof(WNDCLASSEX));
 	wc.cbSize = sizeof(WNDCLASSEX);
 	wc.style = CS_HREDRAW | CS_VREDRAW;
-	wc.lpfnWndProc = MyImGui::WndProc;
+	wc.lpfnWndProc = MyimGui::WndProc;
 	wc.hInstance = GetModuleHandle(0);
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
-	wc.lpszClassName = L"MyImGui";
+	wc.lpszClassName = L"MyimGui";
 	RegisterClassEx(&wc);
 
-	MyImGui::hWindow = CreateWindow(wc.lpszClassName, L"MyImGui", WS_OVERLAPPEDWINDOW, 100, 100, 800, 800, NULL, NULL, wc.hInstance, NULL);
+	MyimGui::hWindow = CreateWindow(wc.lpszClassName, L"MyimGui", WS_OVERLAPPEDWINDOW, 100, 100, 800, 800, NULL, NULL, wc.hInstance, NULL);
 
-	if (MyImGui::hWindow == NULL)
+	if (MyimGui::hWindow == NULL)
 	{
 		std::cout << "ウィンドウの作成に失敗\n";
 		UnregisterClass(wc.lpszClassName, wc.hInstance);
 		std::exit(1);
 	}
 
-	if (!MyImGui::CreateDevice(MyImGui::hWindow))
+	if (!MyimGui::CreateDevice(MyimGui::hWindow))
 	{
 		std::cout << "デバイスの作成に失敗\n";
-		MyImGui::CleanupDevice();
+		MyimGui::CleanupDevice();
 		UnregisterClass(wc.lpszClassName, wc.hInstance);
 		std::exit(1);
 	}
 
-	ShowWindow(MyImGui::hWindow, SW_SHOW);
-	UpdateWindow(MyImGui::hWindow);
+	ShowWindow(MyimGui::hWindow, SW_SHOW);
+	UpdateWindow(MyimGui::hWindow);
 
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	ImGui::StyleColorsLight();
 
-	if (!ImGui_ImplWin32_Init(MyImGui::hWindow))
+	if (!ImGui_ImplWin32_Init(MyimGui::hWindow))
 	{
 		std::cout << "ImGui_ImplWin32_Init failed\n";
 		ImGui::DestroyContext();
@@ -138,7 +137,7 @@ int MyImGui::Showing()
 		std::exit(1);
 	}
 
-	if (!ImGui_ImplDX11_Init(MyImGui::pDevice, MyImGui::pDeviceContext))
+	if (!ImGui_ImplDX11_Init(MyimGui::pDevice, MyimGui::pDeviceContext))
 	{
 		std::cout << "ImGui_ImplDX11_Init failed\n";
 		ImGui::DestroyContext();
@@ -176,7 +175,7 @@ int MyImGui::Showing()
 		*/
 		ImGui::SetNextWindowSize(ImVec2(500, 600), ImGuiCond_Once);
 
-		if (ImGui::Begin("MyImGui TitleBar Text", &MyImGui::show_gui))
+		if (ImGui::Begin("MyimGui TitleBar Text", &show_gui))
 		{
 			ImGui::Text(u8"今日は天気が良いです");
 
@@ -189,7 +188,7 @@ int MyImGui::Showing()
 
 			ImGui::Separator();
 
-			ImGui::Checkbox(u8"チェックボックス", &MyImGui::checkbox);
+			ImGui::Checkbox(u8"チェックボックス", &checkbox);
 
 			ImGui::Separator();
 
@@ -203,9 +202,9 @@ int MyImGui::Showing()
 
 		ImGui::Render();
 		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
-		MyImGui::pDeviceContext->OMSetRenderTargets(1, &MyImGui::pRenderTargetView, NULL);
-		MyImGui::pSwapChain->Present(1, 0);
-		MyImGui::pDeviceContext->ClearRenderTargetView(MyImGui::pRenderTargetView, clear_color);
+		MyimGui::pDeviceContext->OMSetRenderTargets(1, &pRenderTargetView, NULL);
+		MyimGui::pSwapChain->Present(1, 0);
+		MyimGui::pDeviceContext->ClearRenderTargetView(pRenderTargetView, clear_color);
 	}
 
 	//後片付け
@@ -214,7 +213,7 @@ int MyImGui::Showing()
 	ImGui_ImplWin32_Shutdown();
 	ImGui::DestroyContext();
 
-	MyImGui::CleanupDevice();
-	DestroyWindow(MyImGui::hWindow);
+	MyimGui::CleanupDevice();
+	DestroyWindow(MyimGui::hWindow);
 	UnregisterClass(wc.lpszClassName, wc.hInstance);
 }
