@@ -4,11 +4,14 @@
 #include <iostream>
 #include "Sever.h"
 #include "Client.h"
+#include "MyImGUI.h"
+
 int main()
 {
 	int a;
 	std::cout << "起動するモードの選択(1:鯖 2:クライアント)";
 	std::cin >> a;
+	MyImGui mig;
 	if (a == 1) {
 		std::cout << "サーバーを起動します" << std::endl;
 		SeverMaster sm;
