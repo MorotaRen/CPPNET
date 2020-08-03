@@ -1,4 +1,5 @@
 #include "MyImGUI.h"
+#include "AppMaster.h"
 bool MyimGui::CreateDevice(HWND hWindow)
 {
 	DXGI_SWAP_CHAIN_DESC sd;
@@ -175,31 +176,30 @@ int MyimGui::Showing()
 		*/
 		ImGui::SetNextWindowSize(ImVec2(500, 600), ImGuiCond_Once);
 
-		if (ImGui::Begin("MyimGui TitleBar Text", &show_gui))
+		if (ImGui::Begin("起動設定", &show_gui))
 		{
-			ImGui::Text(u8"今日は天気が良いです");
+			//起動関連設定ツリー
+			static int mode = 0;
+			if (ImGui::TreeNode(u8"起動モード")) {
+				//鯖かクライアントかのラジオボタン
+				enum
+				{
+					MODE_Server,
+					MODE_Client,
+				};
+				ImGui::RadioButton(u8"サーバー",&mode,MODE_Server);
+				ImGui::SameLine();
+				ImGui::RadioButton(u8"クライアント", &mode, MODE_Client);
 
-			//区切り線
-			ImGui::Separator();
+				ImGui::TreePop();
+			}
+			if (ImGui::Button(u8"起動")) {
+				Start(mode);
+				msg.message = WM_QUIT;
 
-			ImGui::Text(u8"このように");
-			ImGui::SameLine();
-			ImGui::Text(u8"同じ行にコンテンツを追加することもできます");
-
-			ImGui::Separator();
-
-			ImGui::Checkbox(u8"チェックボックス", &checkbox);
-
-			ImGui::Separator();
-
-			ImGui::ColorPicker4(u8"カラーピッカー", color_picker);
-
-			//フレームレートを表示
-			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-
+			}
 			ImGui::End();
 		}
-
 		ImGui::Render();
 		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 		MyimGui::pDeviceContext->OMSetRenderTargets(1, &pRenderTargetView, NULL);

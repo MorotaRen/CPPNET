@@ -9,3 +9,5 @@
 
 #define LEAVINGTEXT "ëﬁèoÇµÇ‹ÇµÇΩ"
 #define SEVERPORT 12345
+#define SERVER	1
+#define CLIENT	2
